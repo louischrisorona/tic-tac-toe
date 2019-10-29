@@ -2,5 +2,5 @@
 *created by Chris*
 
 This is a simple Tic Tac Toe game. 
-I'm still working on the algorithm for the non player character, **NPC**. \n
+I'm still working on the algorithm for the non player character, **NPC**.
 I can use the minimax algorithm, but I'd like to try my own implementation.
