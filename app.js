@@ -1,17 +1,18 @@
 /* JavaScript for my tic tac toe game 
    created 10/28/2019 by Chris */
-//state object to control game flow
-let state = {
-	player: "X",
-	npc: "O",
-	winner: null,
-	turn: true,
-	board: [
-		null, null, null, 
-		null, null, null, 
-		null, null, null
-		]
-}
+//variables for state management
+let humanPlayer = "X"
+let aiPlayer = "O"
+const winCombinations = [
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[6, 4, 2]
+]
 
 const changePlayer = () => {
 	//controls the player turn based on a BOOLEAN
