@@ -50,7 +50,6 @@ function checkWinner(board, player) {
 	for (let [index, win] of winCombinations.entries()) {
 		if (win.every(el => played.indexOf(el) > -1)) {
 			gameWin = {index: index, player: player}
-			console.log(gameWin)
 			break
 		}
 	}
@@ -70,7 +69,7 @@ function gameOver(game) {
 }
 
 function bestSpot() {
-	return emptySquares()[0]
+	return minimax(originalBoard, aiPlayer).index
 }
 
 function emptySquares() {
@@ -92,4 +91,60 @@ function checkTie() {
 function declareWinner(who) {
 	document.querySelector('.endgame').style.display = "block"
 	document.querySelector('.endgame .text').innerText = who
+}
+
+/* 
+	algorithm for minimax
+	this is an implementation of a well-known 
+	minimax algorithm
+*/
+function minimax(newBoard, player) {
+	let available = emptySquares(newBoard)
+
+	if (checkWinner(newBoard, player)) {
+		return {score: -10}
+	} else if (checkWinner(newBoard, aiPlayer)) {
+		return {score: 20}
+	} else if (available.length === 0) {
+		return {score: 0}
+	}
+	let moves = []
+	for (let i = 0; i < available.length; i++) {
+		let move = {}
+		move.index = newBoard[available[i]]
+		newBoard[available[i]] = player
+
+		if (player == aiPlayer) {
+			let result = minimax(newBoard, humanPlayer)
+			move.score = result.score
+		} else {
+			let result = minimax(newBoard, aiPlayer)
+			move.score = result.score
+		}
+
+		newBoard[available[i]] = move.index
+
+		moves.push(move)
+	}
+
+	let bestMove
+	if (player === aiPlayer) {
+		let bestScore = -10000
+		for (let i = 0; i < moves.length; i++) {
+			if (moves[i].score > bestScore) {
+				bestScore = moves[i].score
+				bestMove = i
+			}
+		}
+	} else {
+		let bestScore = 10000
+		for (let i = 0; i < moves.length; i++) {
+			if (moves[i].score < bestScore) {
+				bestScore = moves[i].score
+				bestMove = i
+			}
+		}
+	}
+
+	return moves[bestMove]
 }
