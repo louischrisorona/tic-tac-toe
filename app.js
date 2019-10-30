@@ -40,15 +40,26 @@ function turn(squareId, player) {
 }
 
 function checkWinner(board, player) {
-	let played = board.reduce((acc, el, index) => {
-		(el === player) ? acc.concat(index) : acc, []
-	})
+	let played = board.reduce((a, e, i) =>
+			(e === player) ? a.concat(i) : a, [])
 	let gameWin = null
 	for (let [index, win] of winCombinations.entries()) {
-		if (win.every(el => played.indexOf(el > -1))) {
+		if (win.every(el => played.indexOf(el) > -1)) {
 			gameWin = {index: index, player: player}
+			console.log(gameWin)
 			break
 		}
 	}
 	return gameWin
+}
+
+function gameOver(game) {
+	for (let index of winCombinations[game.index]) {
+		document.getElementById(index).style.backgroundColor = 
+			game.player == humanPlayer ? "green" : "red"
+	}
+
+	for (let i = 0; i < cells.length; i++) {
+		cells[i].removeEventListener('click', setClick, false)
+	}
 }
