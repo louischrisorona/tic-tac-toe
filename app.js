@@ -20,6 +20,7 @@ const cells = document.getElementsByTagName('td')
 startGame()
 
 function startGame() {
+	document.querySelector('.endgame').style.display = 'none'
 	originalBoard = Array.from(Array(9).keys())
 	for (let i = 0; i < cells.length; i++) {
 		cells[i].innerText = ''
@@ -29,7 +30,10 @@ function startGame() {
 }
 
 function setClick(square) {
-	turn(square.target.id, humanPlayer)
+	if (typeof originalBoard[square.target.id] == 'number') {
+		turn(square.target.id, humanPlayer) //player's turn
+		if (!checkTie()) turn(bestSpot(), aiPlayer)	
+	}	
 }
 
 function turn(squareId, player) {
@@ -62,4 +66,30 @@ function gameOver(game) {
 	for (let i = 0; i < cells.length; i++) {
 		cells[i].removeEventListener('click', setClick, false)
 	}
+	declareWinner(game.player == humanPlayer ? "You win!" : "You lose...")
+}
+
+function bestSpot() {
+	return emptySquares()[0]
+}
+
+function emptySquares() {
+	return originalBoard.filter(cell => typeof cell == 'number')
+}
+
+function checkTie() {
+	if (emptySquares().length == 0) {
+		for (let i = 0; i < cells.length; i++) {
+			cells[i].style.backgroundColor = "yellow"
+			cells[i].removeEventListener('click', setClick, false)
+		}
+		declareWinner("Tie Game!")
+		return true
+	}
+	return false
+}
+
+function declareWinner(who) {
+	document.querySelector('.endgame').style.display = "block"
+	document.querySelector('.endgame .text').innerText = who
 }

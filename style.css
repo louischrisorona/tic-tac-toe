@@ -25,6 +25,21 @@ td {
 	text-align: center;
 }
 
+.endgame {
+	display: none;
+	width: 200px;
+	top: 120px;
+	background-color: rgba(100, 100, 100, 0.85);
+	position: absolute;
+	left: 50%;
+	margin-left: -100px;
+	padding: 50px 0 50px 0;
+	text-align: center;
+	border-radius: 5px;
+	color: white;
+	font-size: 2em;
+}
+
 .vertical {
 	border-left: 2px solid black;
 	border-right: 2px solid black;
