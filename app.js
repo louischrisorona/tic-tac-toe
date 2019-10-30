@@ -3,6 +3,7 @@
 //variables for state management
 let humanPlayer = "X"
 let aiPlayer = "O"
+let originalBoard
 const winCombinations = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -14,34 +15,40 @@ const winCombinations = [
 	[6, 4, 2]
 ]
 
-const changePlayer = () => {
-	//controls the player turn based on a BOOLEAN
-	state.turn = !state.turn
-}
-
-const setTile = (target) => {
-	//controls the mark for each square
-	if (state['turn']) {
-		target.innerHTML = state['player']
-		state['board'][target.id - 1] = state['player']
-	} else {
-		target.innerHTML = state['npc']
-		state['board'][target.id - 1] = state['npc']
-	}
-	changePlayer()
-}
-
 //collect all clickable elements on the table
-const clickables = document.getElementsByTagName('td')
-for(let i = 0; i < clickables.length; i++){
-	clickables[i].addEventListener('click', (event) => {
-		setTile(event.target)
-	})
+const cells = document.getElementsByTagName('td')
+startGame()
+
+function startGame() {
+	originalBoard = Array.from(Array(9).keys())
+	for (let i = 0; i < cells.length; i++) {
+		cells[i].innerText = ''
+		cells[i].style.removeProperty('background-color')
+		cells[i].addEventListener('click', setClick, false)
+	}
 }
 
-const resetGame = () => {
-	const buttonReset = document.getElementById('resetButton')
-	buttonReset.addEventListener('click', (e) => {
-		e.preventDefault()
+function setClick(square) {
+	turn(square.target.id, humanPlayer)
+}
+
+function turn(squareId, player) {
+	originalBoard[squareId] = player
+	document.getElementById(squareId).innerText = player
+	let gameWin = checkWinner(originalBoard, player)
+	if (gameWin) gameOver(gameWin)
+}
+
+function checkWinner(board, player) {
+	let played = board.reduce((acc, el, index) => {
+		(el === player) ? acc.concat(index) : acc, []
 	})
+	let gameWin = null
+	for (let [index, win] of winCombinations.entries()) {
+		if (win.every(el => played.indexOf(el > -1))) {
+			gameWin = {index: index, player: player}
+			break
+		}
+	}
+	return gameWin
 }
