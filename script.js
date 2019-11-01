@@ -34,7 +34,11 @@ function startGame() {
 function setClick(square) {
 	if (typeof originalBoard[square.target.id] == 'number') {
 		turn(square.target.id, humanPlayer) //player's turn	
-		if (!checkWinner(originalBoard, humanPlayer) || !checkTie()) turn(bestSpot(), aiPlayer)	
+		if (checkWinner(originalBoard, humanPlayer)){
+			declareWinner("You win!")
+		} else if (!checkTie()) {
+			turn(bestSpot(), aiPlayer)
+		}
 	}	
 }
 
