@@ -9,5 +9,5 @@ For now, Minimax algorithm was used. See working example at: https://chris-ticta
 
 
 ## Updated 11/1/2019
-* attempting to fix the "tie game" bug when player can achieve a win *
-
+* attempting to fix the "tie game" bug when player can achieve a win 
+* Fixed the tie game bug
