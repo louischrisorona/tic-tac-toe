@@ -4,6 +4,8 @@
 let humanPlayer = "X"
 let aiPlayer = "O"
 let originalBoard
+
+// this is the combinations array of winning board tiles
 const winCombinations = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -31,8 +33,12 @@ function startGame() {
 
 function setClick(square) {
 	if (typeof originalBoard[square.target.id] == 'number') {
-		turn(square.target.id, humanPlayer) //player's turn
-		if (!checkTie()) turn(bestSpot(), aiPlayer)	
+		turn(square.target.id, humanPlayer) //player's turn	
+		if (checkWinner(originalBoard, humanPlayer)){
+			declareWinner("You win!")
+		} else if (!checkTie()) {
+			turn(bestSpot(), aiPlayer)
+		}
 	}	
 }
 
@@ -87,6 +93,7 @@ function checkTie() {
 	}
 	return false
 }
+
 
 function declareWinner(who) {
 	document.querySelector('.endgame').style.display = "block"
