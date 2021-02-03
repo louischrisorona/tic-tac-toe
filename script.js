@@ -108,7 +108,7 @@ function declareWinner(who) {
 function minimax(newBoard, player) {
 	let available = emptySquares(newBoard)
 
-	if (checkWinner(newBoard, player)) {
+	if (checkWinner(newBoard, humanPlayer)) {
 		return {score: -10}
 	} else if (checkWinner(newBoard, aiPlayer)) {
 		return {score: 20}
@@ -121,13 +121,8 @@ function minimax(newBoard, player) {
 		move.index = newBoard[available[i]]
 		newBoard[available[i]] = player
 
-		if (player == aiPlayer) {
-			let result = minimax(newBoard, humanPlayer)
-			move.score = result.score
-		} else {
-			let result = minimax(newBoard, aiPlayer)
-			move.score = result.score
-		}
+		let result = minimax(newBoard, player === aiPlayer ? humanPlayer : aiPlayer)
+		move.score = result.score
 
 		newBoard[available[i]] = move.index
 
